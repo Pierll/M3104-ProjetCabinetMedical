@@ -19,7 +19,7 @@ $server = "localhost";
 		}
 
 	}
-	$ajoutcontact = $linkpdo->prepare('INSERT INTO usager (:civilite, :nom, :prenom, :adresse, :datenaissance, :lieunaissance, :numsecu)');
+	$ajoutcontact = $linkpdo->prepare('INSERT INTO usager (civilite, nom, prenom, adresse, datenaissance, lieunaissance, numsecu)values (?,?,?,?,?,?,?)');
 
 	try {
 		$ajoutcontact->execute(array($_POST["civilite"],$_POST["nom"],$_POST["prenom"],$_POST["adresse"],$_POST["datenaissance"],$_POST["lieunaissance"],$_POST["numsecu"]));
