@@ -1,0 +1,21 @@
+nav { /* barre de naviguation */ 
+	display:flex;
+	width: 100%;
+	
+	color: white; 
+	font-family: "Open Sans", sans-serif;
+
+	background-color: rgb(59, 59, 59);
+
+	height: 100px;
+}
+
+.logo{
+	height: 100%;
+	/*width: auto;*/
+}
+
+.img {
+	height: 100%;
+	width: 10%;
+}

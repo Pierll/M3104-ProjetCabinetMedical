@@ -5,6 +5,7 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
+		<?php include 'requires/require_login.php'; ?>
 		<form action="ajoutusager.php" method="post">
 		<p>Saisir l'usager : </p>
 		<p> Civilite <input type="text" name="civilite" /></p>

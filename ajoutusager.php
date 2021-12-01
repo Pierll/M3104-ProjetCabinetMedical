@@ -1,8 +1,8 @@
 <?php 
 $server = "localhost";
 	$login = "root";
-	$mdp = "";
-	$db = "cabinetmedical";
+	$mdp = "password";
+	$db = "CabinetMedical";
 
 	//Connexion au serveur MySQL 
 	try { 
@@ -19,12 +19,14 @@ $server = "localhost";
 		}
 
 	}
-	$ajoutcontact = $linkpdo->prepare('INSERT INTO usager (civilite, nom, prenom, adresse, datenaissance, lieunaissance, numsecu)values (?,?,?,?,?,?,?)');
+	$ajoutcontact = $linkpdo->prepare('INSERT INTO Usager (civilite, nom, prenom, adresse, datenaissance, lieunaissance, numsecu) values (?,?,?,?,?,?,?)');
 
 	try {
 		$ajoutcontact->execute(array($_POST["civilite"],$_POST["nom"],$_POST["prenom"],$_POST["adresse"],$_POST["datenaissance"],$_POST["lieunaissance"],$_POST["numsecu"]));
-	} catch (PDOException $e) { print($e);
-		die('Erreur, le numero est deja present dans la base de donnee');
+	} catch (PDOException $e) { 
+		print($e);
+		//die('Erreur, le numero est deja present dans la base de donnee');
+		die('Une erreur est survenue');
 	}
 	echo 'Le numero a ete correctement enregistre';
 ?>
