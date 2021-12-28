@@ -62,7 +62,7 @@
 					echo '<td>'.$r['nom'].'</td>';
 					echo '<td>'.$r['prenom'].'</td>';
 					echo '<td>'.$r['adresse'].'</td>';
-					echo '<td>'.$r['dateNaissance'].'</td>';
+					echo '<td>'.date('d/m/Y', $r['dateNaissance']).'</td>';
 					echo '<td>'.$r['lieuNaissance'].'</td>';
 					echo '<td>'.$r['numSecu'].'</td>';
 					echo '</tr>';

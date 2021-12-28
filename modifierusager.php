@@ -9,7 +9,7 @@
 		<?php
 			
 			if (!isset($_POST['Modifier'])) {
-				$req = $PDO->prepare('SELECT * FROM contact WHERE id = :id');
+				$req = $linkpdo->prepare('SELECT * FROM contact WHERE id = :id');
 				$req->execute(array('id' => $_GET['id']));
 				while($data = $req->fetch()){
 					$nom = $data[0];
