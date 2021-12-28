@@ -4,18 +4,9 @@
 		<meta charset="UTF-8">
 	</head>
 	<body>
+		<?php include 'requires/require_login.php'; ?>
+		<?php include 'requires/require_db.php'; ?>
 		<?php
-			$server = "localhost:3306";
-			$login = "root";
-			$mdp = "";
-			$db = "carnet";
-			
-			try {
-				$PDO = new PDO("mysql:host=$server;dbname=$db", $login, $mdp);
-			}
-			catch (Exception $e) {
-				die('Erreur : ' . $e->getMessage());
-			}
 			
 			if (!isset($_POST['Modifier'])) {
 				$req = $PDO->prepare('SELECT * FROM contact WHERE id = :id');

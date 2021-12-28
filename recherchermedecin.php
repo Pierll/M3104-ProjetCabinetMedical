@@ -19,7 +19,7 @@
 		?>
 		
 		<form method="post">
-			<p>Saisir les infos du contact à rechercher : </p>
+			<p>Saisir les infos du médecin à rechercher : </p>
 			Nom <input type="text" name="nom" value="<?php echo $nom; ?>" /><br />
 			Prénom <input type="text" name="prenom" value="<?php echo $prenom; ?>" /><br />
 			<p><input type="reset" value="Vider">
@@ -37,8 +37,8 @@
 			}
 			
 			// prepare
-			$res = $linkpdo->prepare('SELECT civilite, nom, prenom, adresse, dateNaissance, lieuNaissance, numSecu 
-								FROM usager 
+			$res = $linkpdo->prepare('SELECT civilite, nom, prenom
+								FROM medecin
 								WHERE nom LIKE :nom 
 								AND prenom LIKE :prenom');
 			//execute
@@ -61,15 +61,11 @@
 					echo '<td>'.$r['civilite'].'</td>';
 					echo '<td>'.$r['nom'].'</td>';
 					echo '<td>'.$r['prenom'].'</td>';
-					echo '<td>'.$r['adresse'].'</td>';
-					echo '<td>'.$r['dateNaissance'].'</td>';
-					echo '<td>'.$r['lieuNaissance'].'</td>';
-					echo '<td>'.$r['numSecu'].'</td>';
 					echo '</tr>';
 					print("\n");
                 }
 				echo '</table>';
 			}
-		?>    
+		?>  
 	</body>
 </html>
