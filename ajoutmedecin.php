@@ -19,10 +19,10 @@ $server = "localhost";
 		}
 
 	}
-	$ajoutcontact = $linkpdo->prepare('INSERT INTO Usager (civilite, nom, prenom, adresse, dateNaissance, lieuNaissance, numSecu) values (?,?,?,?,?,?,?)');
+	$ajoutcontact = $linkpdo->prepare('INSERT INTO Medecin (civilite, nom, prenom) values (?,?,?)');
 
 	try {
-		$ajoutcontact->execute(array($_POST["civilite"],$_POST["nom"],$_POST["prenom"],$_POST["adresse"],$_POST["dateNaissance"],$_POST["lieuNaissance"],$_POST["numSecu"]));
+		$ajoutcontact->execute(array($_POST["civilite"],$_POST["nom"],$_POST["prenom"]));
 	} catch (PDOException $e) { 
 		print($e);
 		//die('Erreur, le numero est deja present dans la base de donnee');
