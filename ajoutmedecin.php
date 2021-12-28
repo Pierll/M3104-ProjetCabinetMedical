@@ -29,10 +29,10 @@
 					
 				}	
 				if ($_POST["civ"] == "Mme") {
-					echo '<p>MADAME</p>';
+					//echo '<p>MADAME</p>';
 					$civilite = 0;
 				} else {
-					echo '<p>MONSIEUR</p>';
+					//echo '<p>MONSIEUR</p>';
 					$civilite = 1;
 				}
 			    $ajoutusager = $linkpdo->prepare('INSERT INTO Medecin(Civilite, Nom, Prenom) values (?,?,?)');

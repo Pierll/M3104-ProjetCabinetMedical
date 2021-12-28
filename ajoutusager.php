@@ -27,7 +27,7 @@
 				echo '<b>Pas de resultats trouves<b>';
 			} else {
 				echo "Medecin Referant :";
-				echo "<select name=\"civ\">";
+				echo "<select name=\"idmedecin\">";
 				foreach ($result as $r) {
 					//print_r($r);
 					echo '<option value='.$r['Id_Medecin'].'>'.$r['NomPrenom'];
@@ -60,10 +60,10 @@
 					echo '<p>MONSIEUR</p>';
 					$civilite = 1;
 				}
-			    $ajoutusager = $linkpdo->prepare('INSERT INTO Usager(Civilite, Nom, Prenom, Adresse, DateNaissance, LieuNaissance, NumSecu) values (?,?,?,?,?,?,?)');
+			    $ajoutusager = $linkpdo->prepare('INSERT INTO Usager(Civilite, Nom, Prenom, Adresse, DateNaissance, LieuNaissance, NumSecu, Id_Medecin) values (?,?,?,?,?,?,?,?)');
 				
 				try {
-					$ajoutusager->execute(array($civilite, $_POST["nom"],$_POST["prenom"], $_POST["adresse"], $_POST["datenaissance"], $_POST["lieunaissance"], $_POST["numsecu"]));
+					$ajoutusager->execute(array($civilite, $_POST["nom"],$_POST["prenom"], $_POST["adresse"], $_POST["datenaissance"], $_POST["lieunaissance"], $_POST["numsecu"], $_POST["idmedecin"]));
 				} catch (PDOException $e) {
 					print $e;
 					die('Erreur');
