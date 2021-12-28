@@ -16,7 +16,7 @@
 			<p> Nom <input type="text" name="nom" /></p>
 			<p> Prénom <input type="text" name="prenom" /></p>
 			<p> Adresse <input type="text" name="adresse" /></p>
-			<p> Date de naissance <input type="text" name="datenaissance" /></p>
+			<p> Date de naissance <input type="date" name="datenaissance" /></p>
 			<p> Lieu de naissance <input type="text" name="lieunaissance" /></p>
 			<p> Numéro de sécu <input type="text" name="numsecu" /></p>
 			<?php // liste deroulante des medecins 
@@ -55,9 +55,9 @@
 				}	
 
 			    $ajoutusager = $linkpdo->prepare('INSERT INTO Usager(Civilite, Nom, Prenom, Adresse, DateNaissance, LieuNaissance, NumSecu, Id_Medecin) values (?,?,?,?,?,?,?,?)');
-				
+				$datenaissance = strtotime($_POST["datenaissance"]);
 				try {
-					$ajoutusager->execute(array($_POST["civ"], $_POST["nom"],$_POST["prenom"], $_POST["adresse"], $_POST["datenaissance"], $_POST["lieunaissance"], $_POST["numsecu"], $_POST["idmedecin"]));
+					$ajoutusager->execute(array($_POST["civ"], $_POST["nom"],$_POST["prenom"], $_POST["adresse"], $datenaissance, $_POST["lieunaissance"], $_POST["numsecu"], $_POST["idmedecin"]));
 				} catch (PDOException $e) {
 					print $e;
 					die('Erreur');
