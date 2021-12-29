@@ -6,7 +6,7 @@ $password = "root";
 echo "<h1>Veuillez vous connecter</h1>";
 echo "<form method=\"post\">
 			Login<input type=text name=\"login\" required><br/>
-			Password<input type=text name=\"password\" required><br/>
+			Password<input type=\"password\" name=\"password\" required><br/>
 				<input type=submit name=\"btn\" value=\"Valider\">
 			</form>
 			";

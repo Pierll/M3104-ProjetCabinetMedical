@@ -1,9 +1,20 @@
+table{
+  border: 1px solid black;
+  width: 75%;
+}
+
+
+body {
+	margin: 0px;
+
+}
+
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: #00BD00;
 }
 
 li {
@@ -19,9 +30,14 @@ li a {
 }
 
 li a:hover {
-  background-color: #111;
+  background-color: #027902;
 }
 
-.logo {
-	width: 5%;
+li h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.td_bold {
+
 }
