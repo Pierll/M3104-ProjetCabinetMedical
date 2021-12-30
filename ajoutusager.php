@@ -4,6 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title>Ajout usagers</title>
 	</head>
 	<body>
 		<?php include 'requires/require_login.php'; ?>
@@ -20,13 +21,13 @@
 			<p> Adresse <input type="text" name="adresse" /></p>
 			<p> Date de naissance <input type="date" name="datenaissance" /></p>
 			<p> Lieu de naissance <input type="text" name="lieunaissance" /></p>
-			<p> Numéro de sécu (ex: 123456784412345)<input type="text" name="numsecu" /></p>
+			<p> Numéro de sécu (ex: <?php echo rand(111111111111111, 999999999999999);?>)<input type="text" name="numsecu" /></p>
 			<?php // liste deroulante des medecins 
 			$medecins = $linkpdo->prepare("SELECT Id_Medecin, CONCAT(Nom, ' ', Prenom) AS NomPrenom FROM Medecin");
 			$medecins->execute();
 			$result = $medecins->fetchAll(PDO::FETCH_ASSOC); //pour ne avoir de doublons
 			if (empty($result)) {
-				echo '<b>Pas de resultats trouves<b>';
+				echo '<b>Pas de medecins, veuillez en ajouter<b>';
 			} else {
 				echo "Medecin Referant :";
 				echo "<select name=\"idmedecin\">";
@@ -39,7 +40,7 @@
 				echo "</select>";
 			}
 			?>
-			<p><input name="btn_ajouterusager" type="submit" value="Envoyer">
+			<p><input name="btn_ajouterusager" type="submit" value="Ajouter">
 			<input type="reset" value="Vider"></p>
 
 		</form>

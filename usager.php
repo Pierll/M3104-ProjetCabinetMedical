@@ -13,7 +13,7 @@
 	<?php require 'requires/require_menu_nav.php'; ?>
 
 	<form method="post">
-		<p>Nom / Prénom ?</p>
+		<h2>Nom / Prénom ?</h2>
 		Nom <input type="text" name="nom"/><br />
 		Prénom <input type="text" name="prenom"/><br />
 		<input type="reset" value="Vider"/>
@@ -42,9 +42,9 @@
 			
 			$result = $res->fetchAll(PDO::FETCH_ASSOC);
 
-			if (empty($result)) {
+			if (empty($result)) { 
 				print("<b>Pas d'usagés trouvés ! </b>");
-			} else {			
+			} else { //affiche le résultat dans un tableau			
 				echo '<table>';
 				echo '<b><tr><th>Civilité</th><th>Nom</th><th>Prénom</th><th>Date Naissance</th></tr>';
 		        foreach ($result as $r) {
@@ -58,8 +58,14 @@
 					echo '<td>'.$r['nom'].'</td>';
 					echo '<td>'.$r['prenom'].'</td>';
 					echo '<td>'.date('d/m/Y', $r['dateNaissance']).'</td>';
-						echo "<td><form method=\"post\">
+					/* Génère un bouton supprimer usager*/
+						echo "<td><form method=\"post\"> 
 		<input type=\"submit\" name=\"btn_supprimer\" value=\"Supprimer\" />
+		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" />
+	</form></td>";
+					/* Génère un bouton modifier usager*/
+						echo "<td><form method=\"post\" action=\"modifierusager.php\"> 
+		<input type=\"submit\" name=\"btn_modifier\" value=\"Modifier\" />
 		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" />
 	</form></td>";
 					echo '</tr>';
@@ -79,7 +85,6 @@
 			}
 			echo '<b> Succès de la suppression </b>';
 		}
-
 	?>    
 	<br/>
 	<a href="ajoutusager.php">Ajouter un usager</a>
