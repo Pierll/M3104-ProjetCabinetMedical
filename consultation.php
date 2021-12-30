@@ -75,7 +75,9 @@
 				echo '</table>';
 		}
 
-		if (isset($_POST["btn_supprimer"])) {
+		
+	}
+	if (isset($_POST["btn_supprimer"])) {
 			$suppressionConsultation = $linkpdo->prepare('DELETE FROM Consultation WHERE Id_Consultation = ?');
 			try {
 					$suppressionConsultation->execute(array($_POST["id_consultation"]));
@@ -84,9 +86,7 @@
 					die('Erreur');
 			}
 			echo '<b> Succès de la suppression </b>';
-			header("location: consultation.php"); //rafraichie la page
 		}
-	}
 		?>
 		<i>Pour ajouter des consultations, utilisez la page "Gestion Usagers"</i>
 	</body>
