@@ -11,14 +11,43 @@
 		<?php require 'requires/require_menu_nav.php'; ?>
 		
 		<h2>Liste des consultations</h2>
+		<form method="post">
+			<?php // liste deroulante des medecins 
+				$medecins = $linkpdo->prepare("SELECT Id_Medecin, CONCAT(Nom, ' ', Prenom) AS NomPrenom FROM Medecin");
+				$medecins->execute();
+				$result_medecins = $medecins->fetchAll(PDO::FETCH_ASSOC); //pour ne avoir de doublons
+				echo "Medecin :<br/>";
+				echo "<select name=\"idmedecin\">";
+				foreach ($result_medecins as $r) {
+					//print_r($r);
 
+
+
+					echo '<option value='.$r['Id_Medecin'];
+					echo '>'.$r['NomPrenom'].'</option>';
+					
+					echo '<br/>';
+				}
+				echo "</select>";
+				?>
+				<input type="submit" name="btn_rechercher" value="Rechercher">
+				<input type="submit" name="btn_affichertout" value="Afficher Tout">
+		</form>
+		
+		<?php 
+
+		if (isset($_POST['btn_affichertout'])) $_POST['btn_rechercher'] = 1;
+
+		if (isset($_POST['btn_rechercher'])) {
+			if (isset($_POST['btn_affichertout'])) {
+				$requeteConsultation = $linkpdo->prepare("SELECT CONCAT(Usager.Nom, ' ', Usager.Prenom) AS NomPrenomUsager, CONCAT(Medecin.Nom, ' ', Medecin.Prenom) AS NomPrenomMedecin, Consultation.DateC, Consultation.Duree, Consultation.Id_Consultation FROM Medecin, Usager, Consultation WHERE Consultation.Id_Usager = Usager.Id_Usager AND Consultation.Id_Medecin = Medecin.Id_Medecin ORDER BY Consultation.DateC DESC");
+					$requeteConsultation->execute();
+			} else {
+				$requeteConsultation = $linkpdo->prepare("SELECT CONCAT(Usager.Nom, ' ', Usager.Prenom) AS NomPrenomUsager, CONCAT(Medecin.Nom, ' ', Medecin.Prenom) AS NomPrenomMedecin, Consultation.DateC, Consultation.Duree, Consultation.Id_Consultation FROM Medecin, Usager, Consultation WHERE Consultation.Id_Usager = Usager.Id_Usager AND Consultation.Id_Medecin = Medecin.Id_Medecin AND Medecin.Id_Medecin = ? ORDER BY Consultation.DateC DESC");
+					$requeteConsultation->execute(array($_POST['idmedecin']));
+			}
 
 			
-		</form>
-		<?php 
-			/*SELECT CONCAT(Usager.Nom, ' ', Usager.Prenom) AS NomPrenomUsager, CONCAT(Medecin.Nom, ' ', Medecin.Prenom) AS NomPrenomMedecin FROM Medecin, Usager, Consultation WHERE Consultation.Id_Usager = Usager.Id_Usager AND Consultation.Id_Medecin = Medecin.Id_Medecin;*/
-			$requeteConsultation = $linkpdo->prepare("SELECT CONCAT(Usager.Nom, ' ', Usager.Prenom) AS NomPrenomUsager, CONCAT(Medecin.Nom, ' ', Medecin.Prenom) AS NomPrenomMedecin, Consultation.DateC, Consultation.Duree, Consultation.Id_Consultation FROM Medecin, Usager, Consultation WHERE Consultation.Id_Usager = Usager.Id_Usager AND Consultation.Id_Medecin = Medecin.Id_Medecin");
-			$requeteConsultation->execute();
 			$result = $requeteConsultation->fetchAll(PDO::FETCH_ASSOC);
 		if (empty($result)) { 
 				print("<b>Pas de consultations trouvés ! </b><br/>");
@@ -57,6 +86,7 @@
 			echo '<b> Succès de la suppression </b>';
 			header("location: consultation.php"); //rafraichie la page
 		}
+	}
 		?>
 		<i>Pour ajouter des consultations, utilisez la page "Gestion Usagers"</i>
 	</body>
