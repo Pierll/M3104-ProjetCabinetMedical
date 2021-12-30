@@ -16,12 +16,12 @@
 			   <option value="1">Monsieur</option>
 		       <option value="0">Madame</option>
 			</select>
-			<p> Nom <input type="text" name="nom" /></p>
-			<p> Prénom <input type="text" name="prenom" /></p>
-			<p> Adresse <input type="text" name="adresse" /></p>
-			<p> Date de naissance <input type="date" name="datenaissance" /></p>
-			<p> Lieu de naissance <input type="text" name="lieunaissance" /></p>
-			<p> Numéro de sécu (ex: <?php echo rand(111111111111111, 999999999999999);?>)<input type="text" name="numsecu" /></p>
+			<p> Nom <input type="text" name="nom" ></p>
+			<p> Prénom <input type="text" name="prenom" ></p>
+			<p> Adresse <input type="text" name="adresse" ></p>
+			<p> Date de naissance <input type="date" name="datenaissance" ></p>
+			<p> Lieu de naissance <input type="text" name="lieunaissance" ></p>
+			<p> Numéro de sécu (ex: <?php echo rand(111111111111111, 999999999999999);?>)<input type="text" name="numsecu" ></p>
 			<?php // liste deroulante des medecins 
 			$medecins = $linkpdo->prepare("SELECT Id_Medecin, CONCAT(Nom, ' ', Prenom) AS NomPrenom FROM Medecin");
 			$medecins->execute();

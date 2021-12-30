@@ -17,8 +17,8 @@
 		<i><p>Il est possible d'entrer seulement un nom ou un prénom</p></i>
 		Nom <input type="text" name="nom"/><br />
 		Prénom <input type="text" name="prenom"/><br />
-		<input type="submit" name="btn_rechercher" value="Rechercher"/>
-		<input type="submit" name="btn_affichertout" value="Afficher tout les usagers"/>
+		<input type="submit" name="btn_rechercher" value="Rechercher">
+		<input type="submit" name="btn_affichertout" value="Afficher tout les usagers">
 	</form>
 	<br/> 
 	<?php
@@ -50,7 +50,7 @@
 			} else { //affiche le résultat dans un tableau			
 
 				echo '<table>';
-				echo '<b><tr><th>Civilité</th><th>Nom</th><th>Prénom</th><th>Date Naissance</th><th>Médecin Référant</th></tr>';
+				echo '<b><tr><th>Civilité</th><th>Nom</th><th>Prénom</th><th>Date Naissance</th><th>Médecin Référant</th></tr></b>';
 		        foreach ($result as $r) {
 					echo '<tr>';
 					if ($r['civilite'] == 0) {
@@ -78,6 +78,12 @@
 						echo "<td><form method=\"post\" action=\"modifierusager.php\"> 
 		<input type=\"submit\" name=\"btn_modifier\" value=\"Modifier\" />
 		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" />
+	</form></td>";
+					/* Génère un bouton créer consultation*/
+						echo "<td><form method=\"post\" action=\"ajoutconsultation.php\"> 
+		<input type=\"submit\" name=\"btn_consultation\" value=\"Créer Consultation\" >
+		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" >
+		<input type=\"hidden\" name=\"id_medecin\" value=\"".$r['Id_Medecin']."\" >
 	</form></td>";
 					echo '</tr>';
 					print("\n");
