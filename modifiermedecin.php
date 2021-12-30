@@ -1,75 +1,64 @@
+<!DOCTYPE HTML>
 <html>
 	<html lang="fr">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title>Modifier medecin</title>
 	</head>
 	<body>
 		<?php include 'requires/require_login.php'; ?>
 		<?php include 'requires/require_db.php'; ?>
-		<?php
-			
-			if (!isset($_POST['Modifier'])) {
-				$req = $PDO->prepare('SELECT * FROM contact WHERE id = :id');
-				$req->execute(array('id' => $_GET['id']));
-				while($data = $req->fetch()){
-					$nom = $data[0];
-					$prenom = $data[1];
-					$adresse = $data[2];
-					$code_postal = $data[3];
-					$ville = $data[4];
-					$telephone = $data[5];
-					$id = $data[6];
-				}
-			}
-			
-			if (isset($_POST["nom"])) {
-				$nom = $_POST["nom"];
-			}
-			if (isset($_POST["prenom"])) {
-				$prenom = $_POST["prenom"];
-			}
-			if (isset($_POST["adresse"])) {
-				$adresse = $_POST["adresse"];
-			}
-			if (isset($_POST["code_postal"])) {
-				$code_postal = $_POST["code_postal"];
-			}
-			if (isset($_POST["ville"])) {
-				$ville = $_POST["ville"];
-			}
-			if (isset($_POST["telephone"])) {
-				$telephone = $_POST["telephone"];
-			}
-		?>
-		
-		<form method="post">
-			<p>Saisir les infos du contact à rechercher : </p>
-			Nom <input type="text" name="nom" value="<?php echo $nom; ?>" /><br />
-			Prénom <input type="text" name="prenom" value="<?php echo $prenom; ?>" /><br />
-			Adresse <input type="text" name="adresse" value="<?php echo $adresse; ?>" /><br />
-			Code postal <input type="text" name="code_postal" value="<?php echo $code_postal; ?>" /><br />
-			Ville <input type="text" name="ville" value="<?php echo $ville; ?>" /></p>
-			Téléphone <input type="text" name="telephone" value="<?php echo $telephone; ?>" /><br />
-			<p><input type="reset" value="Vider">
-			<input type="submit" name="Modifier" value="Modifier"></p>
-		</form>
-		
+		<?php include 'requires/require_menu_nav.php'; ?>
+		<p>Modifier le medecin : </p>
 		<?php 
-			$res = $PDO->prepare('UPDATE contact SET nom = :nom,
-				prenom = :prenom, 
-				adresse = :adresse, 
-				code_postal = :code_postal,
-				ville = :ville,
-				telephone = :telephone
-				WHERE id = :id');
-			$res->execute(array('id' => $_GET["id"],
-				'nom' => $nom,
-				'prenom' => $prenom,
-				'adresse' => $adresse,
-				'code_postal' => $code_postal,
-				'ville' => $ville,
-				'telephone' => $telephone));
-				
+			if (!isset($_POST['id_medecin'])) { //on retourne à la page medecin quand on a finis
+				header("location: medecin.php");
+			}
+			$res = $linkpdo->prepare('SELECT * FROM Medecin 
+			WHERE Id_Medecin LIKE ?');
+			$res->execute(array($_POST['id_medecin']));
+			$result = $res->fetchAll(PDO::FETCH_ASSOC);
+
 		?>
+		<form method="post">
+		   Civilite: <select name="civ">
+			   <option value="1" <?php if ($result[0]['Civilite'] == 1) echo "selected" ?> >Monsieur</option>
+		       <option value="0" <?php if ($result[0]['Civilite'] == 0) echo "selected" ?>>Madame</option>
+			</select>
+			<p> Nom <input type="text" name="nom" value=<?php echo $result[0]['Nom'];?> /></p>
+			<p> Prénom <input type="text" name="prenom" value=<?php echo $result[0]['Prenom'];?> /></p>
+			<input type="hidden" name="idmedecin" value=<?php echo $_POST['id_medecin']; ?>>
+			<br/><br/>
+			<input name="btn_ajoutermedecin" type="submit" value="Modifier">
+		</form>
+
+			
+
+<?php 
+			if (isset($_POST["btn_ajoutermedecin"])) {
+				foreach ($_POST as $param_name => $param_val) {
+				    if (!isset($_POST[$param_name]) || $_POST[$param_name] == '') {
+				    	echo "Erreur lors du traitement, une valeur est manquante: Param: $param_name; Value: $param_val\n";
+				    	exit();
+				    }
+					
+				}	
+
+					$ajoutmedecin = $linkpdo->prepare('UPDATE Medecin SET Civilite= ?, Nom = ?, Prenom = ? WHERE Id_Medecin = ?');
+					try {
+						$ajoutmedecin->execute(array($_POST["civ"], $_POST["nom"],$_POST["prenom"], $_POST["idmedecin"]));
+					} catch (PDOException $e) {
+						print $e;
+						die('Erreur');
+					}
+				
+			    
+				
+			}
+
+?>
 	</body>
 </html>
+
+

@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
-		<title>Ajout usagers</title>
+		<title>Ajout usager</title>
 	</head>
 	<body>
 		<?php include 'requires/require_login.php'; ?>

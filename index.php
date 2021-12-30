@@ -10,5 +10,6 @@
 		<?php require 'requires/require_menu_nav.php'; ?>
 		
 		<p>Bienvenue sur le site WEB du cabinet médical</p><br/><br/>
+		<img src="img/zen.jpeg" style="width: 50%;" />
 	</body>
 </html>

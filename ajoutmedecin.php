@@ -3,11 +3,14 @@
 	<html lang="fr">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title>Ajout medecin</title>
 	</head>
 	<body>
 		<?php include 'requires/require_login.php'; ?>
 		<?php include 'requires/require_db.php'; ?>		
-		<p>Saisir l'usager : </p>
+		<?php include 'requires/require_menu_nav.php'; ?>
+		<p>Saisir le medecin : </p>
 		<form method="post">
 		   Civilite: <select name="civ">
 			   <option value="M">Monsieur</option>
@@ -29,10 +32,8 @@
 					
 				}	
 				if ($_POST["civ"] == "Mme") {
-					//echo '<p>MADAME</p>';
 					$civilite = 0;
 				} else {
-					//echo '<p>MONSIEUR</p>';
 					$civilite = 1;
 				}
 			    $ajoutusager = $linkpdo->prepare('INSERT INTO Medecin(Civilite, Nom, Prenom) values (?,?,?)');
@@ -43,8 +44,7 @@
 					print $e;
 					die('Erreur');
 				}
-				
-
+				header("location: medecin.php"); 				
 			}
 ?>
 	</body>

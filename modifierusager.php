@@ -39,8 +39,14 @@
 			$result_medecins = $medecins->fetchAll(PDO::FETCH_ASSOC); //pour ne avoir de doublons
 			echo "Medecin Referant :<br/>";
 			echo "<select name=\"idmedecin\">";
+			if ($result[0]['Id_Medecin'] == NULL) { //si le patient n'a pas de médecins référants
+				echo '<option value="NULL" selected>(Le médecin à été supprimé)</option>';
+			}
 			foreach ($result_medecins as $r) {
 				//print_r($r);
+
+
+
 				echo '<option value='.$r['Id_Medecin'];
 				if ($r['Id_Medecin'] == $result[0]['Id_Medecin'])
 					echo ' selected';
