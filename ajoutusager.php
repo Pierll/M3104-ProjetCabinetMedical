@@ -3,10 +3,12 @@
 	<html lang="fr">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
 	</head>
 	<body>
 		<?php include 'requires/require_login.php'; ?>
 		<?php include 'requires/require_db.php'; ?>
+		<?php include 'requires/require_menu_nav.php'; ?>
 		<p>Saisir l'usager : </p>
 		<form method="post">
 		   Civilite: <select name="civ">
@@ -18,7 +20,7 @@
 			<p> Adresse <input type="text" name="adresse" /></p>
 			<p> Date de naissance <input type="date" name="datenaissance" /></p>
 			<p> Lieu de naissance <input type="text" name="lieunaissance" /></p>
-			<p> Numéro de sécu <input type="text" name="numsecu" /></p>
+			<p> Numéro de sécu (ex: 123456784412345)<input type="text" name="numsecu" /></p>
 			<?php // liste deroulante des medecins 
 			$medecins = $linkpdo->prepare("SELECT Id_Medecin, CONCAT(Nom, ' ', Prenom) AS NomPrenom FROM Medecin");
 			$medecins->execute();
@@ -37,7 +39,7 @@
 				echo "</select>";
 			}
 			?>
-			<p><input name="btn" type="submit" value="Envoyer">
+			<p><input name="btn_ajouterusager" type="submit" value="Envoyer">
 			<input type="reset" value="Vider"></p>
 
 		</form>
@@ -45,7 +47,7 @@
 			
 
 <?php 
-			if (isset($_POST["btn"])) {
+			if (isset($_POST["btn_ajouterusager"])) {
 				foreach ($_POST as $param_name => $param_val) {
 				    if (!isset($_POST[$param_name]) || $_POST[$param_name] == '') {
 				    	echo "Erreur lors du traitement, une valeur est manquante: Param: $param_name; Value: $param_val\n";
@@ -62,7 +64,7 @@
 					print $e;
 					die('Erreur');
 				}
-				
+				header("location: usager.php"); 
 
 			}
 ?>

@@ -16,7 +16,11 @@
       <li>
         <a href="./statistique.php">Statistiques</a>
       </li>
+      <li>
+        <?php require 'requires/require_decobutton.php'; ?>
+      </li>
     </ul>
+
   </nav>
 </body>
 </html>

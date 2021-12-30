@@ -4,12 +4,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" type="text/css" href="css/style.css">
+		<title>Gestion usagers</title>
 	</head>
 	<body>
 
 	<?php include 'requires/require_login.php'; ?>
 	<?php include 'requires/require_db.php'; ?>
-	<?php require 'requires/require_menu_nav.html'; ?>
+	<?php require 'requires/require_menu_nav.php'; ?>
 
 	<form method="post">
 		<p>Nom / Prénom ?</p>
@@ -19,7 +20,7 @@
 		<input type="submit" name="btn_rechercher" value="Rechercher"/>
 		<input type="submit" name="btn_affichertout" value="Afficher tout les usagers"/>
 	</form>
-	<br/>
+	<br/> 
 	<?php
 		if (isset($_POST["btn_affichertout"])) {
 			$_POST["btn_rechercher"] = 1;
@@ -28,26 +29,25 @@
 		}
 
 		if (isset($_POST["btn_rechercher"])) {
-
-			($nom = $_POST["nom"]) == "" ? $nom = "%" : 1 ;
+			/* Si l'utilisateur n'entre rien le champs concerne TOUT les noms/prénom */
+			($nom = $_POST["nom"]) == "" ? $nom = "%" : 1 ; 
 			($prenom = $_POST["prenom"]) == "" ? $prenom = "%" : 1 ;
 
 			$res = $linkpdo->prepare('SELECT civilite, nom, prenom, dateNaissance, Id_Usager
 			FROM Usager 
 			WHERE nom LIKE :nom 
 			AND prenom LIKE :prenom');
-			//execute
 			$res->execute(array('nom' => $nom,
 								'prenom' => $prenom));
 			
 			$result = $res->fetchAll(PDO::FETCH_ASSOC);
+
 			if (empty($result)) {
 				print("<b>Pas d'usagés trouvés ! </b>");
 			} else {			
 				echo '<table>';
 				echo '<b><tr><th>Civilité</th><th>Nom</th><th>Prénom</th><th>Date Naissance</th></tr>';
 		        foreach ($result as $r) {
-		            //print_r($r);
 					echo '<tr>';
 					if ($r['civilite'] == 0) {
 						$r['civilite'] = "Madame";
@@ -81,9 +81,8 @@
 		}
 
 	?>    
+	<br/>
+	<a href="ajoutusager.php">Ajouter un usager</a>
 
-	<form method="post">
-		<input type="submit" name="btn_ajouter" value="Ajouter un Usager" />
-	</form>
 	</body>
 </html>
