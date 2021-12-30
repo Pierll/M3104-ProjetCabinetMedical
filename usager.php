@@ -71,13 +71,13 @@
 					}
 					/* Génère un bouton supprimer usager*/
 						echo "<td><form method=\"post\"> 
-		<input type=\"submit\" name=\"btn_supprimer\" value=\"Supprimer\" />
-		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" />
+		<input type=\"submit\" name=\"btn_supprimer\" value=\"Supprimer\" >
+		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" >
 	</form></td>";
 					/* Génère un bouton modifier usager*/
 						echo "<td><form method=\"post\" action=\"modifierusager.php\"> 
-		<input type=\"submit\" name=\"btn_modifier\" value=\"Modifier\" />
-		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" />
+		<input type=\"submit\" name=\"btn_modifier\" value=\"Modifier\" >
+		<input type=\"hidden\" name=\"id_usager\" value=\"".$r['Id_Usager']."\" >
 	</form></td>";
 					/* Génère un bouton créer consultation*/
 						echo "<td><form method=\"post\" action=\"ajoutconsultation.php\"> 
@@ -94,7 +94,9 @@
 		}	
 		if (isset($_POST["btn_supprimer"])) {
 			$suppressionUsager = $linkpdo->prepare('DELETE FROM Usager WHERE Id_Usager = ?');
+			$suppressionConsultation = $linkpdo->prepare('DELETE FROM Consultation WHERE Id_Usager = ?'); //supprimer les consultations...
 			try {
+					$suppressionConsultation->execute(array($_POST["id_usager"]));
 					$suppressionUsager->execute(array($_POST["id_usager"]));
 			} catch (PDOException $e) {
 					print $e;

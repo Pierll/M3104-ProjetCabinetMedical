@@ -57,7 +57,7 @@
 					
 				}	
 
-			    $ajoutconsultation = $linkpdo->prepare('INSERT INTO Consultation values (?,?,?,?)');
+			    $ajoutconsultation = $linkpdo->prepare('INSERT INTO Consultation(Id_Usager, Id_Medecin, DateC, Duree) values (?,?,?,?)');
 				$dateconsultation = strtotime($_POST["date_consultation"].' '.$_POST['heure_consultation']);
 				$dureeconsultation = strtotime($_POST["duree_consultation"]);
 				try {

@@ -76,9 +76,11 @@
 		}	
 		if (isset($_POST["btn_supprimer"])) {
 			$suppressionUsager = $linkpdo->prepare('UPDATE Usager SET Id_Medecin = NULL WHERE Id_Medecin = ?'); //il faut d'abord retirer la clé étrangère des usagers
+			$suppressionConsultation = $linkpdo->prepare('DELETE FROM Consultation WHERE Id_Medecin = ?'); //supprimer les consultations...
 			$suppressionMedecin = $linkpdo->prepare('DELETE FROM Medecin WHERE Id_Medecin = ?');
 			try {
 					$suppressionUsager->execute(array($_POST["id_medecin"]));
+					$suppressionConsultation->execute(array($_POST["id_medecin"]));
 					$suppressionMedecin->execute(array($_POST["id_medecin"]));
 			} catch (PDOException $e) {
 					print $e;
