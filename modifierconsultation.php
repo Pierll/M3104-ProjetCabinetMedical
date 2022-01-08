@@ -88,9 +88,9 @@
 				}	
 				$dateconsultation = strtotime($_POST["date_consultation"].' '.$_POST['heure_consultation']);
 				$dureeconsultation = strtotime($_POST["duree_consultation"]);
-				$ajoutconsultation = $linkpdo->prepare('UPDATE Consultation SET Id_Usager= ?, Id_Medecin = ?, DateC = ?, Duree = ? WHERE Id_Consultation = ?');
+				$modifierconsultation = $linkpdo->prepare('UPDATE Consultation SET Id_Usager= ?, Id_Medecin = ?, DateC = ?, Duree = ? WHERE Id_Consultation = ?');
 				try {
-					$ajoutconsultation->execute(array($_POST["idusager"], $_POST["idmedecin"],$dateconsultation, $dureeconsultation, $_POST['idconsultation']));
+					$modifierconsultation->execute(array($_POST["idusager"], $_POST["idmedecin"],$dateconsultation, $dureeconsultation, $_POST['idconsultation']));
 				} catch (PDOException $e) {
 					print $e;
 					die('Erreur');

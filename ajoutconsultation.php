@@ -60,6 +60,17 @@
 			    $ajoutconsultation = $linkpdo->prepare('INSERT INTO Consultation(Id_Usager, Id_Medecin, DateC, Duree) values (?,?,?,?)');
 				$dateconsultation = strtotime($_POST["date_consultation"].' '.$_POST['heure_consultation']);
 				$dureeconsultation = strtotime($_POST["duree_consultation"]);
+
+				/* Vérification chevauchement */
+				$verifierconsultation = $linkpdo->prepare("SELECT Id_Consultation FROM Consultation WHERE (? >= DateC AND ? <= DateC + (from_unixtime(Duree, '%h')*3600 + from_unixtime(Duree, '%i')*60)) OR (? >= DateC AND ? <= DateC + (from_unixtime(Duree, '%h')*3600 + from_unixtime(Duree, '%i')*60)) AND Id_Medecin = ?");
+				$verifierconsultation->execute(array($dateconsultation, $dateconsultation, $dureeconsultation, $dureeconsultation, $_POST['id_medecin']));
+				$resultatChevauchement = $verifierconsultation->fetchAll(PDO::FETCH_ASSOC);
+				if (!empty($resultatChevauchement)) {
+					echo 'erreur, chevauchement !';
+					die();
+				}
+
+
 				try {
 					$ajoutconsultation->execute(array($_POST['id_usager'], $_POST['id_medecin'], $dateconsultation, $dureeconsultation));
 				} catch (PDOException $e) {
