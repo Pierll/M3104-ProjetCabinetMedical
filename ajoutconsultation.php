@@ -41,7 +41,7 @@
 			<input type="date" name="date_consultation"> 
 			<p>Heure (h:m):</p>
 			<input type="time" name="heure_consultation"> 
-			<p>Duree (h:m):</p>
+			<p>Duree (h:m) (MAX: 23h59h)</p>
 			<input type="time" name="duree_consultation"> 
 			<p><input type="submit" name="btn_ajout_consultation" value="Créer consultation"></p>			
 			<input type="hidden" name="id_usager" value=<?php echo $_POST['id_usager']; ?>>
@@ -59,17 +59,26 @@
 
 			    $ajoutconsultation = $linkpdo->prepare('INSERT INTO Consultation(Id_Usager, Id_Medecin, DateC, Duree) values (?,?,?,?)');
 				$dateconsultation = strtotime($_POST["date_consultation"].' '.$_POST['heure_consultation']);
-				$dureeconsultation = strtotime($_POST["duree_consultation"]);
+				$dureeconsultation = strtotime('1970-01-01 ' . $_POST["duree_consultation"] . 'GMT');
+				$finconsultation = $dateconsultation + $dureeconsultation;
 
-				/* Vérification chevauchement (non fonctionnel)*//*
-				$verifierconsultation = $linkpdo->prepare("SELECT Id_Consultation FROM Consultation WHERE (? >= DateC AND ? <= DateC + (from_unixtime(Duree, '%h')*3600 + from_unixtime(Duree, '%i')*60)) OR (? >= DateC AND ? <= DateC + (from_unixtime(Duree, '%h')*3600 + from_unixtime(Duree, '%i')*60)) AND Id_Medecin = ?");
-				$verifierconsultation->execute(array($dateconsultation, $dateconsultation, $dureeconsultation, $dureeconsultation, $_POST['id_medecin']));
+				/* Vérification chevauchement */ 
+				$verifierconsultation = $linkpdo->prepare("SELECT Id_Consultation
+					FROM Consultation
+					WHERE Id_Medecin = ?
+					  AND ((? >= DateC
+					       AND ? <= DateC + Duree)
+					  OR (? >= DateC
+					      AND ? <= DateC + Duree)
+					  OR (? < DateC
+					      AND ? > DateC + Duree))");
+				$verifierconsultation->execute(array($_POST['id_medecin'],$dateconsultation,$dateconsultation,$finconsultation,$finconsultation,$dateconsultation,$finconsultation));
 				$resultatChevauchement = $verifierconsultation->fetchAll(PDO::FETCH_ASSOC);
 				if (!empty($resultatChevauchement)) {
 					echo 'Erreur, chevauchement !';
 					die();
 				}
-				*/
+				
 
 				try {
 					$ajoutconsultation->execute(array($_POST['id_usager'], $_POST['id_medecin'], $dateconsultation, $dureeconsultation));

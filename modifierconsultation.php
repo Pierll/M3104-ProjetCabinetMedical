@@ -68,13 +68,23 @@
 			<p>Heure (h:m):</p>
 			<input type="time" name="heure_consultation" value=<?php echo date('H:i', $result[0]['DateC']); ?>> 
 			<p>Duree (h:m):</p>
-			<input type="time" name="duree_consultation" value=<?php echo date('H:i', $result[0]['Duree']); ?>> 
+			<input type="time" name="duree_consultation" value=<?php 
+			$time = $result[0]['Duree'];
+			$seconds = $time % 60;
+			$time = ($time - $seconds) / 60;
+			$minutes = $time % 60;
+			$hours = ($time - $minutes) / 60;
+			if ($minutes < 10) 
+				$minutes = '0'.$minutes;
+			if ($hours < 10) 
+				$hours = '0'.$hours;
+			echo $hours.':'.$minutes; 
+			?>> 
 
 			<input type="hidden" name="idconsultation" value=<?php echo $_POST['id_consultation']; ?>>
 			<br/><br/>
 			<input name="btn_ajouterconsultation" type="submit" value="Modifier">
 		</form>
-
 			
 
 <?php 
@@ -86,20 +96,28 @@
 				    }
 					
 				}	
+				$modifierconsultation = $linkpdo->prepare('UPDATE Consultation SET Id_Usager= ?, Id_Medecin = ?, DateC = ?, Duree = ? WHERE Id_Consultation = ?');
 				$dateconsultation = strtotime($_POST["date_consultation"].' '.$_POST['heure_consultation']);
-				$dureeconsultation = strtotime($_POST["duree_consultation"]);
+				$dureeconsultation = strtotime('1970-01-01 ' . $_POST["duree_consultation"] . 'GMT');
+				$finconsultation = $dateconsultation + $dureeconsultation;
 
-				/* Vérification chevauchement (non fonctionnel)*/
-				/*
-				$verifierconsultation = $linkpdo->prepare("SELECT Id_Consultation FROM Consultation WHERE (? >= DateC AND ? <= DateC + (from_unixtime(Duree, '%h')*3600 + from_unixtime(Duree, '%i')*60)) OR (? >= DateC AND ? <= DateC + (from_unixtime(Duree, '%h')*3600 + from_unixtime(Duree, '%i')*60)) AND Id_Medecin = ?");
-				$verifierconsultation->execute(array($dateconsultation, $dateconsultation, $dureeconsultation, $dureeconsultation, $_POST['idmedecin']));
+				/* Vérification chevauchement */ 
+				$verifierconsultation = $linkpdo->prepare("SELECT Id_Consultation
+					FROM Consultation
+					WHERE Id_Medecin = ?
+					  AND ((? >= DateC
+					       AND ? <= DateC + Duree)
+					  OR (? >= DateC
+					      AND ? <= DateC + Duree)
+					  OR (? < DateC
+					      AND ? > DateC + Duree))");
+				$verifierconsultation->execute(array($_POST['idmedecin'],$dateconsultation,$dateconsultation,$finconsultation,$finconsultation,$dateconsultation,$finconsultation));
 				$resultatChevauchement = $verifierconsultation->fetchAll(PDO::FETCH_ASSOC);
 				if (!empty($resultatChevauchement)) {
-					echo 'Erreur, chevauchement !';
-					die();
+					echo 'Erreur, chevauchement !'; 
+					die(); // !!! BUG !!! Si le chevauchement a lieu la page ne l'afficheras pas (le contenue ne seras quand même pas modifié)
 				}
-				*/
-				$modifierconsultation = $linkpdo->prepare('UPDATE Consultation SET Id_Usager= ?, Id_Medecin = ?, DateC = ?, Duree = ? WHERE Id_Consultation = ?');
+				
 				try {
 					$modifierconsultation->execute(array($_POST["idusager"], $_POST["idmedecin"],$dateconsultation, $dureeconsultation, $_POST['idconsultation']));
 				} catch (PDOException $e) {

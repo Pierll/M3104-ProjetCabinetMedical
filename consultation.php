@@ -59,7 +59,7 @@
 					echo '<td>'.$r['NomPrenomUsager'].'</td>';
 					echo '<td>'.$r['NomPrenomMedecin'].'</td>';
 					echo '<td>'.date('d/m/Y H:i', $r['DateC']).'</td>';
-					echo '<td>'.date('H:i', $r['Duree']).'</td>';
+					echo '<td>'.gmdate("H:i", $r['Duree']).'</td>';
 					/* Génère un bouton supprimer consultation*/
 						echo "<td><form method=\"post\"> 
 		<input type=\"submit\" name=\"btn_supprimer\" value=\"Supprimer\" >

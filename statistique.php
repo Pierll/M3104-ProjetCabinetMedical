@@ -10,7 +10,7 @@
 		<?php include 'requires/require_login.php'; ?>
 		<?php include 'requires/require_db.php'; ?>
 		<?php include 'requires/require_menu_nav.php'; ?>
-		<h2>Statistiques par âges</h2>
+		<h2>Statistiques des usagers par âges</h2>
 		<?php
 			$res = $linkpdo->prepare('SELECT civilite, dateNaissance
 				FROM Usager');
